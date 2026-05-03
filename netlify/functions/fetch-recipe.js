@@ -68,28 +68,64 @@ export async function handler(event) {
 
   } catch (err) {
     console.error('fetch-recipe error:', err.message);
+    // If the error message is our friendly one, pass it through
+    const friendly = err.message.includes('blocks') || err.message.includes('not found') ||
+                     err.message.includes('rate-limit') || err.message.includes('returned an error');
     return {
       statusCode: 500,
       headers: HEADERS,
-      body: JSON.stringify({ error: 'Could not fetch this page. The site may block automated requests.' })
+      body: JSON.stringify({
+        error: friendly
+          ? err.message
+          : 'Could not fetch this page. Try copying the recipe text and using Paste instead.'
+      })
     };
   }
 }
 
 // ─── FETCH ────────────────────────────────────────────────────────────────────
 
-async function fetchPage(url) {
-  const res = await fetch(url, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (compatible; Mise-RecipeImporter/1.0)',
-      'Accept': 'text/html,application/xhtml+xml',
-      'Accept-Language': 'en-US,en;q=0.9',
-    },
-    redirect: 'follow',
-    signal: AbortSignal.timeout(8000), // 8s timeout
-  });
+// Rotate through a few realistic UAs — some sites block identical repeated requests
+const USER_AGENTS = [
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15',
+];
 
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+async function fetchPage(url) {
+  const ua      = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+  const headers = {
+    'User-Agent':      ua,
+    'Accept':          'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Cache-Control':   'no-cache',
+    'Pragma':          'no-cache',
+    'Sec-Fetch-Dest':  'document',
+    'Sec-Fetch-Mode':  'navigate',
+    'Sec-Fetch-Site':  'none',
+    'Upgrade-Insecure-Requests': '1',
+  };
+
+  // First attempt
+  let res = await fetch(url, { headers, redirect: 'follow', signal: AbortSignal.timeout(10000) });
+
+  // Some sites return 403 on first hit but allow a retry — try once more
+  if (res.status === 403 || res.status === 429) {
+    await new Promise(r => setTimeout(r, 800));
+    res = await fetch(url, { headers, redirect: 'follow', signal: AbortSignal.timeout(10000) });
+  }
+
+  if (!res.ok) {
+    const friendly = {
+      403: 'This site blocks automated access. Copy the recipe text and use Paste instead.',
+      404: 'Recipe page not found — check the URL.',
+      429: 'This site is rate-limiting requests. Try again in a moment.',
+      500: 'The recipe site returned an error. Try Paste instead.',
+    };
+    throw new Error(friendly[res.status] || `HTTP ${res.status}`);
+  }
+
   return res.text();
 }
 
