@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-  /* ── BASE TOKENS (shared across all themes) ── */
+  /* ── BASE TOKENS ── */
   :root {
     --radius: 12px;
     --radius-sm: 8px;
@@ -28,10 +28,8 @@
     --header-h: 56px;
     --red: #c84040;
     --green: #4a8c5c;
-  }
 
-  /* ── EMBER (default — warm charcoal + amber) ── */
-  [data-theme="ember"], :root {
+    /* EMBER — default, always set on :root so app renders before JS fires */
     --bg: #0f0d09;
     --surface: #1c1912;
     --surface2: #252118;
@@ -41,9 +39,6 @@
     --cream: #e8dfc8;
     --cream-dim: #a89f88;
     --cream-muted: #6a6358;
-    --accent: #c8841a;
-    --accent-bright: #e09a28;
-    --accent-dim: #6b4710;
     --amber: #c8841a;
     --amber-bright: #e09a28;
     --amber-dim: #6b4710;
@@ -52,7 +47,26 @@
     --text-muted: #6a6358;
   }
 
-  /* ── MIDNIGHT (deep navy + electric blue) ── */
+  /* ── EMBER ── */
+  [data-theme="ember"] {
+    --bg: #0f0d09;
+    --surface: #1c1912;
+    --surface2: #252118;
+    --surface3: #2e2a1e;
+    --border: #3a3526;
+    --border-light: #4a4535;
+    --cream: #e8dfc8;
+    --cream-dim: #a89f88;
+    --cream-muted: #6a6358;
+    --amber: #c8841a;
+    --amber-bright: #e09a28;
+    --amber-dim: #6b4710;
+    --text: #e8dfc8;
+    --text-dim: #a89f88;
+    --text-muted: #6a6358;
+  }
+
+  /* ── MIDNIGHT ── */
   [data-theme="midnight"] {
     --bg: #0a0e1a;
     --surface: #111827;
@@ -63,9 +77,6 @@
     --cream: #c9d8f0;
     --cream-dim: #8fa3c0;
     --cream-muted: #4a607a;
-    --accent: #4a90e2;
-    --accent-bright: #6aaff5;
-    --accent-dim: #1e3a6e;
     --amber: #4a90e2;
     --amber-bright: #6aaff5;
     --amber-dim: #1e3a6e;
@@ -74,20 +85,17 @@
     --text-muted: #4a607a;
   }
 
-  /* ── GARDEN (warm white + forest green) ── */
+  /* ── GARDEN ── */
   [data-theme="garden"] {
     --bg: #f5f2eb;
     --surface: #edeae0;
     --surface2: #e4e0d4;
     --surface3: #dad5c6;
     --border: #c8c2ae;
-    --border-light: #b8b1999;
+    --border-light: #b8b199;
     --cream: #1e2e1e;
     --cream-dim: #3a4e3a;
     --cream-muted: #7a8e7a;
-    --accent: #2d6a4f;
-    --accent-bright: #40916c;
-    --accent-dim: #b7d7c8;
     --amber: #2d6a4f;
     --amber-bright: #40916c;
     --amber-dim: #b7d7c8;
@@ -96,7 +104,7 @@
     --text-muted: #7a8e7a;
   }
 
-  /* ── DUSK (deep plum + soft lavender) ── */
+  /* ── DUSK ── */
   [data-theme="dusk"] {
     --bg: #12091e;
     --surface: #1c1130;
@@ -107,9 +115,6 @@
     --cream: #e0d0f8;
     --cream-dim: #b09ad8;
     --cream-muted: #6a5490;
-    --accent: #c77dff;
-    --accent-bright: #e0aaff;
-    --accent-dim: #5a2d8a;
     --amber: #c77dff;
     --amber-bright: #e0aaff;
     --amber-dim: #5a2d8a;
@@ -118,7 +123,7 @@
     --text-muted: #6a5490;
   }
 
-  /* ── FLAME (true black + hot orange) ── */
+  /* ── FLAME ── */
   [data-theme="flame"] {
     --bg: #0a0a0a;
     --surface: #141414;
@@ -129,9 +134,6 @@
     --cream: #f5f0e8;
     --cream-dim: #b8b0a0;
     --cream-muted: #666055;
-    --accent: #ff6b35;
-    --accent-bright: #ff8c5a;
-    --accent-dim: #7a2a10;
     --amber: #ff6b35;
     --amber-bright: #ff8c5a;
     --amber-dim: #7a2a10;
@@ -140,7 +142,7 @@
     --text-muted: #666055;
   }
 
-  /* ── SPICE (warm parchment + deep terracotta) ── */
+  /* ── SPICE ── */
   [data-theme="spice"] {
     --bg: #f7efe4;
     --surface: #efe5d6;
@@ -151,9 +153,6 @@
     --cream: #2c1810;
     --cream-dim: #5a3520;
     --cream-muted: #8a6548;
-    --accent: #b5451b;
-    --accent-bright: #d4581e;
-    --accent-dim: #f0c8b0;
     --amber: #b5451b;
     --amber-bright: #d4581e;
     --amber-dim: #f0c8b0;
@@ -1159,13 +1158,6 @@
   [data-theme="spice"] #bottom-nav {
     background: var(--surface);
     border-color: var(--border);
-  }
-
-  /* Shared accent alias — keep amber-* vars working for all themes */
-  :root, [data-theme] {
-    --amber: var(--accent);
-    --amber-bright: var(--accent-bright);
-    --amber-dim: var(--accent-dim);
   }
 
   /* COMING SOON (kept for other potential use) */
