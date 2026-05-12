@@ -38,6 +38,7 @@ function resetForm() {
   document.getElementById('f-protein').value = '';
   document.getElementById('f-carbs').value   = '';
   document.getElementById('f-fat').value     = '';
+  clearNutritionSearch();
   selectedEmoji = '🍳';
   document.querySelectorAll('.emoji-opt').forEach((e, i) => e.classList.toggle('selected', i === 0));
   parsedData = null;

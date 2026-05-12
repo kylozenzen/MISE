@@ -1119,3 +1119,110 @@
 .sheet.keyboard-open .sheet-body::after {
   height: 280px;
 }
+
+/* ── TAG FILTER STRIP ────────────────────────────────────────────────────────*/
+.tag-filter-strip {
+  display: flex;
+  gap: 6px;
+  padding: 10px 16px 6px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+.tag-filter-strip::-webkit-scrollbar { display: none; }
+
+.tag-filter-chip {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border-radius: 100px;
+  border: 1px solid var(--border-light);
+  background: none;
+  color: var(--text-muted);
+  font-family: 'Lato', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.tag-filter-chip.active {
+  background: var(--amber-dim);
+  border-color: var(--amber);
+  color: var(--amber-bright);
+}
+.tag-filter-chip:active { opacity: 0.7; }
+
+.tag.tag-active {
+  background: var(--amber-dim);
+  color: var(--amber-bright);
+}
+
+/* ── NUTRITION LOOKUP ────────────────────────────────────────────────────────*/
+.nutrition-results {
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--surface2);
+}
+
+#nutrition-results {
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--surface2);
+  max-height: 240px;
+  overflow-y: auto;
+}
+#nutrition-results::-webkit-scrollbar { display: none; }
+
+.nutrition-result-item {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.nutrition-result-item:last-child { border-bottom: none; }
+.nutrition-result-item:active { background: var(--surface3); }
+
+.nutrition-result-name {
+  font-size: 13px;
+  color: var(--cream);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nutrition-result-macros {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nr-macro {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--surface3);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.nr-macro.cal { color: var(--amber-bright); background: var(--amber-dim); }
+
+.nr-serving {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted);
+  margin-left: auto;
+  letter-spacing: 0.5px;
+}
+
+.nutrition-empty {
+  padding: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}

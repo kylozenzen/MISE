@@ -111,6 +111,7 @@
       <div class="search-wrap">
         <input type="text" class="search-input" id="search-input" placeholder="Search recipes…" oninput="filterRecipes(this.value)">
       </div>
+      <div class="tag-filter-strip" id="tag-filter-strip"></div>
       <div id="library-content"></div>
     </div>
   </div>
@@ -465,6 +466,22 @@
             </label>
 
             <div id="macros-section" style="display:none">
+              <!-- NUTRITION LOOKUP -->
+              <div style="margin-bottom:14px">
+                <div style="position:relative">
+                  <input type="text" id="nutrition-search" placeholder="Search ingredient to fill macros…"
+                    oninput="nutritionSearch(this.value)"
+                    autocomplete="off"
+                    style="font-size:13px;padding-right:36px">
+                  <div id="nutrition-spinner" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%)">
+                    <div class="url-spinner"></div>
+                  </div>
+                </div>
+                <div id="nutrition-results" style="display:none"></div>
+                <div id="nutrition-credit" style="display:none;font-size:10px;color:var(--text-muted);margin-top:4px;text-align:right">
+                  Data: USDA FoodData Central
+                </div>
+              </div>
               <div class="macros-grid">
                 <div class="macro-field">
                   <label>Calories</label>
@@ -483,7 +500,7 @@
                   <input type="number" id="f-fat" placeholder="8">
                 </div>
               </div>
-            </div>
+            </div><!-- end macros-section -->
           </div>
 
           <button class="btn-primary" onclick="saveFormRecipe()">Save Recipe</button>
@@ -505,6 +522,7 @@
 <script src="/js/detail.js"></script>
 <script src="/js/form.js"></script>
 <script src="/js/parser.js"></script>
+<script src="/js/nutrition.js"></script>
 <script src="/js/planner.js"></script>
 <script src="/js/settings.js"></script>
 <script src="/js/app.js"></script>
